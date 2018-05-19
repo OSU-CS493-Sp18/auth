@@ -1,0 +1,33 @@
+{
+  "name": "book-a-place",
+  "version": "1.4.0",
+  "description": "The Book-a-Place API, now with auth.",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.0-beta4",
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js"
+  },
+  "author": "Rob Hess <hessro@oregonstate.edu>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSU-CS493-Sp18/auth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OSU-CS493-Sp18/auth/issues"
+  },
+  "homepage": "https://github.com/OSU-CS493-Sp18/auth#readme"
+}
