@@ -15,7 +15,7 @@ function insertNewUser(user, mongoDB) {
   const usersCollection = mongoDB.collection('users');
   return usersCollection.insertOne(userDocument)
     .then((result) => {
-      return Promise.resolve(result.insertedID);
+      return Promise.resolve(result.insertedId);
     });
 }
 
