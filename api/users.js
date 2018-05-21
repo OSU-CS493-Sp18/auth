@@ -48,20 +48,11 @@ router.post('/', function (req, res) {
   }
 });
 
-function generateUserIDQuery(userID) {
-  if (ObjectId.isValid(userID)) {
-    return { _id: new ObjectId(userID) };
-  } else {
-    return { userID: userID };
-  }
-}
-
 function getUserByID(userID, mongoDB, includePassword) {
   const usersCollection = mongoDB.collection('users');
-  const query = generateUserIDQuery(userID);
   const projection = includePassword ? {} : { password: 0 };
   return usersCollection
-    .find(query)
+    .find({ userID: userID })
     .project(projection)
     .toArray()
     .then((results) => {
