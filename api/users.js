@@ -1,19 +1,24 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs');
 const ObjectId = require('mongodb').ObjectId;
 
 function validateUserObject(user) {
-  return user && user.userID && user.name && user.email;
+  return user && user.userID && user.name && user.email && user.password;
 }
 
 function insertNewUser(user, mongoDB) {
-  const userDocument = {
-    userID: user.userID,
-    name: user.name,
-    email: user.email,
-    lodgings: []
-  };
-  const usersCollection = mongoDB.collection('users');
-  return usersCollection.insertOne(userDocument)
+  return bcrypt.hash(user.password, 8)
+    .then((passwordHash) => {
+      const userDocument = {
+        userID: user.userID,
+        name: user.name,
+        email: user.email,
+        password: passwordHash,
+        lodgings: []
+      };
+      const usersCollection = mongoDB.collection('users');
+      return usersCollection.insertOne(userDocument);
+    })
     .then((result) => {
       return Promise.resolve(result.insertedId);
     });
@@ -51,10 +56,14 @@ function generateUserIDQuery(userID) {
   }
 }
 
-function getUserByID(userID, mongoDB) {
+function getUserByID(userID, mongoDB, includePassword) {
   const usersCollection = mongoDB.collection('users');
   const query = generateUserIDQuery(userID);
-  return usersCollection.find(query).toArray()
+  const projection = includePassword ? {} : { password: 0 };
+  return usersCollection
+    .find(query)
+    .project(projection)
+    .toArray()
     .then((results) => {
       return Promise.resolve(results[0]);
     });
