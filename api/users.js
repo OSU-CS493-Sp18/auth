@@ -108,9 +108,8 @@ router.get('/:userID/lodgings', function (req, res, next) {
 
 function addLodgingToUser(lodgingID, userID, mongoDB) {
   const usersCollection = mongoDB.collection('users');
-  const query = generateUserIDQuery(userID);
   return usersCollection.updateOne(
-    query,
+    { userID: userID },
     { $push: { lodgings: lodgingID } }
   ).then(() => {
     return Promise.resolve(lodgingID);
